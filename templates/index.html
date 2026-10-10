@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>FitSlot - Gym Booking</title>
+			<link rel="stylesheet" href="static/styles/indexMain.css">
+	</head>
+	<body>
+
+		<!-- Navigation Bar -->
+		{% include 'navBar.html' %}
+
+		<!-- Main Content Container -->
+		<div class="main-container">
+
+			<!-- Left Side: Exercise Cards -->
+			<div class="exercise-section">
+				<h2>Workout Zones</h2>
+				<p class="subtitle">Check out available training areas before reserving your slot.</p>
+
+				<div class="cards-grid">
+					<!-- Card 1 -->
+					<div class="card">
+						<img src="https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?w=500" alt="Strength Training">
+						<div class="card-content">
+							<h3>Heavy Lifting & Strength</h3>
+							<p>Fully equipped with squat racks, deadlift platforms, power cages, and free dumbbells.</p>
+						</div>
+					</div>
+
+					<!-- Card 2 -->
+					<div class="card">
+						<img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=500" alt="Cardio Zone">
+						<div class="card-content">
+							<h3>Cardio Suite</h3>
+							<p>High-end treadmills, rowing machines, spin bikes, and elliptical trainers for endurance.</p>
+						</div>
+					</div>
+
+					<!-- Card 3 -->
+					<div class="card">
+						<img src="https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=500" alt="Crossfit Arena">
+						<div class="card-content">
+							<h3>Functional & HIIT</h3>
+							<p>Open turf area equipped with kettlebells, battle ropes, plyo boxes, and slam balls.</p>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<!-- Right Side: Login Form -->
+			<div class="login-section" id="login">
+				<div class="login-card">
+					<h2>Member Sign In</h2>
+					<p>Log in to select and reserve your gym timing.</p>
+
+					<form action="/dashboard" method="GET">
+						<div class="form-group">
+							<label>Member ID / Username</label>
+							<input type="text" placeholder="e.g. Member101" required>
+						</div>
+
+						<div class="form-group">
+							<label>Password</label>
+							<input type="password" placeholder="••••••••" required>
+						</div>
+
+						<button type="submit" class="login-btn">Login & Book Slot</button>
+					</form>
+				</div>
+			</div>
+
+		</div>
+
+	</body>
+</html>
