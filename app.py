@@ -29,5 +29,11 @@ def bookings():
 def dashboard():
     return render_template('dashboard.html')
 
+@app.route('/dbtest')
+def dbtest():
+    with engine.connect() as connection:
+        result = connection.execute(text("SELECT 1"))
+        return f"DB connected: {result.scalar()}"
+
 if __name__ == '__main__':
     app.run(host='0.0.0.0', debug=True)
