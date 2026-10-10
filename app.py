@@ -1,39 +1,41 @@
-from flask import Flask, render_template
+import os
+from flask import Flask, render_template, request, redirect, url_for, session, flash
 from database import engine
 from sqlalchemy import text
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
-def load_user_data():
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT * FROM Users"))
-        result_all = result.mappings().all()
-        print(result_all)
-
-        if result_all:
-            first_result_dict = dict(result_all[0])
-            print('type of', type(first_result_dict), 'is', first_result_dict)
-            return 
-        else:
-            print("The Users table is empty.")
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def index():
-    return render_template('index.html')
+    error = None
 
-@app.route('/bookings')
-def bookings():
-    return render_template('booking.html')
+    if request.method == 'POST':
+        username = request.form.get('username', '').strip()
+        password = request.form.get('password', '')
+
+        with engine.connect() as conn:
+            user = conn.execute(
+                text("SELECT username, password FROM Users WHERE username = :u"),
+                {"u": username},
+            ).mappings().first()
+
+        if user and user['password'] == password:
+            session['username'] = user['username']
+            return redirect(url_for('dashboard'))
+
+        error = "Invalid username or password"
+
+    return render_template('index.html', error=error)
 
 @app.route('/dashboard')
 def dashboard():
-    return render_template('dashboard.html')
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    return render_template('dashboard.html', username=session['username'])
 
-@app.route('/dbtest')
-def dbtest():
-    with engine.connect() as connection:
-        result = connection.execute(text("SELECT 1"))
-        return f"DB connected: {result.scalar()}"
-
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+@app.route('/bookings')
+def bookings():
+    if 'username' not in session:
+        return redirect(url_for('index'))
+    return render_template('booking.html')
